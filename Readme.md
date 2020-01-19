@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
-* Студент: [Алина](https://up.htmlacademy.ru/javascript/19/user/800317).
-* Наставник: `Неизвестно`.
+* Студент: [Алина Калачева](https://up.htmlacademy.ru/javascript/19/user/800317).
+* Наставник: [Артем Зрилов](https://htmlacademy.ru/profile/id1045563).
 
 ---
 
