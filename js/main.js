@@ -40,12 +40,12 @@
     return photos;
   };
 
-  var generateAds = function (ads, i) {
-    ads.author = {
+  var generateAds = function (ad, i) {
+    ad.author = {
       'avatar': 'img/avatars/user0' + (i + 1) + '.png'
     };
     var checkTime = checkTimes[randomInteger(0, 2)];
-    ads.offer = {
+    ad.offer = {
       'title': 'описание',
       'address': '600, 350',
       'price': randomInteger(30, 500),
@@ -58,18 +58,18 @@
       'description': 'описание',
       'photos': generatePhotos()
     };
-    ads.location = {
+    ad.location = {
       'x': randomInteger(0, 1200),
       'y': randomInteger(130, 630)
     };
   };
 
-  var generatePinElement = function (ads) {
+  var generatePinElement = function (ad) {
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.style.left = ads.location.x - 25 + 'px';
-    pinElement.style.top = ads.location.y - 70 + 'px';
-    pinElement.querySelector('img').setAttribute('src', ads.author.avatar);
-    pinElement.querySelector('img').setAttribute('alt', ads.offer.title)
+    pinElement.style.left = ad.location.x - 25 + 'px';
+    pinElement.style.top = ad.location.y - 70 + 'px';
+    pinElement.querySelector('img').setAttribute('src', ad.author.avatar);
+    pinElement.querySelector('img').setAttribute('alt', ad.offer.title);
     fragment.appendChild(pinElement);
   };
 
