@@ -1,0 +1,83 @@
+'use strict';
+
+(function () {
+
+  document.querySelector('.map').classList.remove('map--faded');
+
+  var ads = [{}, {}, {}, {}, {}, {}, {}, {}];
+
+  var types = ['palace', 'flat', 'house', 'bungalo'];
+
+  var checkTimes = ['12:00', '13:00', '14:00'];
+
+  var allFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var features = [];
+
+  var allPhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  var photos = [];
+
+  var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
+  var mapPins = document.querySelector('.map__pins');
+
+  var fragment = document.createDocumentFragment();
+
+  var randomInteger = function (min, max) {
+    return Math.floor(min + Math.random() * (max + 1 - min));
+  };
+
+  var generateFeatures = function () {
+    for (var i = 0; i < randomInteger(0, 5); i++) {
+      features[i] = allFeatures[i];
+    }
+    return features;
+  };
+
+  var generatePhotos = function () {
+    for (var i = 0; i < randomInteger(0, 2); i++) {
+      photos[i] = allPhotos[i];
+    }
+    return photos;
+  };
+
+  var generateAds = function (ads, i) {
+    ads.author = {
+      'avatar': 'img/avatars/user0' + (i + 1) + '.png'
+    };
+    var checkTime = checkTimes[randomInteger(0, 2)];
+    ads.offer = {
+      'title': 'описание',
+      'address': '600, 350',
+      'price': randomInteger(30, 500),
+      'type': types[randomInteger(0, 3)],
+      'rooms': randomInteger(1, 8),
+      'guests': randomInteger(1, 5),
+      'checkin': checkTime,
+      'checkout': checkTime,
+      'features': generateFeatures(),
+      'description': 'описание',
+      'photos': generatePhotos()
+    };
+    ads.location = {
+      'x': randomInteger(0, 1200),
+      'y': randomInteger(130, 630)
+    };
+  };
+
+  var generatePinElement = function (ads) {
+    var pinElement = pinTemplate.cloneNode(true);
+    pinElement.style.left = ads.location.x - 25 + 'px';
+    pinElement.style.top = ads.location.y - 70 + 'px';
+    pinElement.querySelector('img').setAttribute('src', ads.author.avatar);
+    pinElement.querySelector('img').setAttribute('alt', ads.offer.title)
+    fragment.appendChild(pinElement);
+  };
+
+  for (var i = 0; i < 8; i++) {
+    generateAds(ads[i], i);
+    generatePinElement(ads[i]);
+  }
+
+  mapPins.appendChild(fragment);
+
+})();
