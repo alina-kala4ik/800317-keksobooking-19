@@ -63,7 +63,7 @@
         'x': randomInteger(0, 1200),
         'y': randomInteger(130, 630)
       }
-    }
+    };
   };
 
   var generatePinElement = function (ad) {
