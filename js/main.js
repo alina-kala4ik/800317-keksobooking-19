@@ -27,14 +27,14 @@
   };
 
   var generateFeatures = function () {
-    for (var i = 0; i < randomInteger(0, 5); i++) {
+    for (var i = 0; i < randomInteger(0, 6); i++) {
       features[i] = ALL_FEATURES[i];
     }
     return features;
   };
 
   var generatePhotos = function () {
-    for (var i = 0; i < randomInteger(0, 2); i++) {
+    for (var i = 0; i < randomInteger(0, 3); i++) {
       photos[i] = ALL_PHOTOS[i];
     }
     return photos;
