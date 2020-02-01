@@ -45,13 +45,15 @@
 
   var generateAds = function (i) {
     var checkTime = CHECK_TIMES[randomInteger(0, 2)];
+    var locationX = randomInteger(0, 1200);
+    var locationY = randomInteger(130, 630);
     ads[i] = {
       'author': {
         'avatar': 'img/avatars/user0' + (i + 1) + '.png'
       },
       'offer': {
         'title': 'описание',
-        'address': '600, 350',
+        'address': locationX + ', ' + locationY,
         'price': randomInteger(30, 500),
         'type': TYPES[randomInteger(0, 3)],
         'rooms': randomInteger(1, 8),
@@ -63,8 +65,8 @@
         'photos': generatePhotos()
       },
       'location': {
-        'x': randomInteger(0, 1200),
-        'y': randomInteger(130, 630)
+        'x': locationX,
+        'y': locationY
       }
     };
   };
