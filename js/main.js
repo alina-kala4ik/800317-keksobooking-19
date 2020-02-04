@@ -161,44 +161,6 @@
 
   // настройка активной страницы
 
-  var deactivatesPage = function () {
-    allForms.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    mapFilters.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
-  };
-
-  deactivatesPage();
-
-  var actvatesPage = function () {
-    mapPins.appendChild(fragment);
-    map.insertBefore(fragment, filtersContainer);
-    allForms.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    mapFilters.forEach(function (item) {
-      item.removeAttribute('disabled');
-    });
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE + MAP_PIN_HEIGHT_ARROW);
-  };
-
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
-      actvatesPage();
-    }
-  });
-
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY) {
-      actvatesPage();
-    }
-  });
-
   var validatesFormRoomsAndGuests = function () {
     var rooms = Number(roomNumber.value);
     var guests = Number(capacity.value);
@@ -232,16 +194,45 @@
     }
   };
 
-  adForm.addEventListener('input', function () {
-    validatesFormPrise();
+  var deactivatesPage = function () {
+    allForms.forEach(function (item) {
+      item.setAttribute('disabled', 'true');
+    });
+    mapFilters.forEach(function (item) {
+      item.setAttribute('disabled', 'true');
+    });
+    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
+  };
+
+  deactivatesPage();
+
+  var activatesPage = function () {
+    mapPins.appendChild(fragment);
+    map.insertBefore(fragment, filtersContainer);
+    allForms.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
+    mapFilters.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE + MAP_PIN_HEIGHT_ARROW);
+    adForm.addEventListener('input', validatesFormPrise);
+    adForm.addEventListener('change', validatesFormRoomsAndGuests);
+    adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
+  };
+
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    if (evt.button === 0) {
+      activatesPage();
+    }
   });
 
-  adForm.addEventListener('change', function () {
-    validatesFormRoomsAndGuests();
-  });
-
-  adFormSubmit.addEventListener('click', function () {
-    validatesFormRoomsAndGuests();
+  mapPinMain.addEventListener('keydown', function (evt) {
+    if (evt.key === ENTER_KEY) {
+      activatesPage();
+    }
   });
 
 })();
