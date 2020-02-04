@@ -205,7 +205,7 @@
   };
 
   var synchronizesCheckTime = function (evt) {
-    var target = evt.target
+    var target = evt.target;
     if (target.value === '12:00') {
       checkin.value = '12:00';
       checkout.value = '12:00';
@@ -243,7 +243,7 @@
 
   deactivatesPage();
 
-  var activatesPage = function (evt) {
+  var activatesPage = function () {
     mapPins.appendChild(fragment);
     map.insertBefore(fragment, filtersContainer);
     allForms.forEach(function (item) {
@@ -264,6 +264,6 @@
     });
 
     adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
-  }
+  };
 
 })();
