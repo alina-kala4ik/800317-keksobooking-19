@@ -164,10 +164,10 @@
   var deactivatesPage = function () {
     allForms.forEach(function (item) {
       item.removeAttribute('disabled');
-    })
+    });
     mapFilters.forEach(function (item) {
       item.removeAttribute('disabled');
-    })
+    });
     address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
   };
 
@@ -178,10 +178,10 @@
     map.insertBefore(fragment, filtersContainer);
     allForms.forEach(function (item) {
       item.removeAttribute('disabled');
-    })
+    });
     mapFilters.forEach(function (item) {
       item.removeAttribute('disabled');
-    })
+    });
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE + MAP_PIN_HEIGHT_ARROW);
@@ -221,7 +221,7 @@
       priceHousing.setCustomValidity('Минимальня цена за ночь в бунгало 0 руб.');
     } else if (typeHousing.value === 'flat' && prise < 1000) {
       priceHousing.setCustomValidity('Минимальня цена за ночь в квартире 1 000 руб.');
-    } else if (typeHousing.value === 'house' && prise < 5000 ) {
+    } else if (typeHousing.value === 'house' && prise < 5000) {
       priceHousing.setCustomValidity('Минимальня цена за ночь в доме 5 000 руб.');
     } else if (typeHousing.value === 'palace' && prise < 10000) {
       priceHousing.setCustomValidity('Минимальня цена за ночь в доме 10 000 руб.');
