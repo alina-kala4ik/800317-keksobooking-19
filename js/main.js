@@ -35,6 +35,8 @@
   var filtersContainer = document.querySelector('.map__filters-container');
   var typeHousing = adForm.querySelector('#type');
   var priceHousing = adForm.querySelector('#price');
+  var checkin = adForm.querySelector('#timein');
+  var checkout = adForm.querySelector('#timeout');
 
   var randomInteger = function (min, max) {
     return Math.floor(min + Math.random() * (max + 1 - min));
@@ -182,15 +184,42 @@
     if (typeHousing.value === 'bungalo' && prise < 0) {
       priceHousing.setCustomValidity('Минимальня цена за ночь в бунгало 0 руб.');
     } else if (typeHousing.value === 'flat' && prise < 1000) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в квартире 1 000 руб.');
+      priceHousing.setCustomValidity('Минимальня цена за ночь в квартире 1000 руб.');
     } else if (typeHousing.value === 'house' && prise < 5000) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в доме 5 000 руб.');
+      priceHousing.setCustomValidity('Минимальня цена за ночь в доме 5000 руб.');
     } else if (typeHousing.value === 'palace' && prise < 10000) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в доме 10 000 руб.');
+      priceHousing.setCustomValidity('Минимальня цена за ночь в доме 10000 руб.');
     } else if (prise > 1000000) {
-      priceHousing.setCustomValidity('Максимальная цена за ночь не может превышать 1 000 000 руб.');
+      priceHousing.setCustomValidity('Максимальная цена за ночь не может превышать 1000000 руб.');
     } else {
       priceHousing.setCustomValidity('');
+    }
+  };
+
+  var changePrisePlaceholder = function (evt) {
+    var target = evt.target;
+    if (target.value === 'bungalo') {
+      priceHousing.setAttribute('placeholder', '0');
+    } else if (target.value === 'flat') {
+      priceHousing.setAttribute('placeholder', '1000');
+    } else if (target.value === 'house') {
+      priceHousing.setAttribute('placeholder', '5000')
+    } else if (target.value === 'palace') {
+      priceHousing.setAttribute('placeholder', '10000')
+    }
+  };
+
+  var synchronizesCheckTime = function (evt) {
+    var target = evt.target
+    if (target.value === '12:00') {
+      checkin.value = '12:00';
+      checkout.value = '12:00';
+    } else if (target.value === '13:00') {
+      checkin.value = '13:00';
+      checkout.value = '13:00';
+    } else if (target.value === '14:00') {
+      checkin.value = '14:00';
+      checkout.value = '14:00';
     }
   };
 
@@ -202,11 +231,24 @@
       item.setAttribute('disabled', 'true');
     });
     address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
+
+    mapPinMain.addEventListener('mousedown', function (evt) {
+      if (evt.button === 0) {
+        activatesPage();
+      }
+    });
+
+    mapPinMain.addEventListener('keydown', function (evt) {
+      if (evt.key === ENTER_KEY) {
+        activatesPage();
+      }
+    });
+
   };
 
   deactivatesPage();
 
-  var activatesPage = function () {
+  var activatesPage = function (evt) {
     mapPins.appendChild(fragment);
     map.insertBefore(fragment, filtersContainer);
     allForms.forEach(function (item) {
@@ -218,21 +260,16 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE + MAP_PIN_HEIGHT_ARROW);
+
     adForm.addEventListener('input', validatesFormPrise);
-    adForm.addEventListener('change', validatesFormRoomsAndGuests);
+
+    adForm.addEventListener('change', function (evt) {
+      validatesFormRoomsAndGuests();
+      changePrisePlaceholder(evt);
+      synchronizesCheckTime(evt);
+    });
+
     adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
-  };
-
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) {
-      activatesPage();
-    }
-  });
-
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY) {
-      activatesPage();
-    }
-  });
+  }
 
 })();
