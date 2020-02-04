@@ -33,7 +33,6 @@
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var filtersContainer = document.querySelector('.map__filters-container');
-  var typeHousing = adForm.querySelector('#type');
   var priceHousing = adForm.querySelector('#price');
   var checkin = adForm.querySelector('#timein');
   var checkout = adForm.querySelector('#timeout');
@@ -179,20 +178,16 @@
     }
   };
 
-  var validatesFormPrise = function () {
-    var prise = Number(priceHousing.value);
-    if (typeHousing.value === 'bungalo' && prise < 0) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в бунгало 0 руб.');
-    } else if (typeHousing.value === 'flat' && prise < 1000) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в квартире 1000 руб.');
-    } else if (typeHousing.value === 'house' && prise < 5000) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в доме 5000 руб.');
-    } else if (typeHousing.value === 'palace' && prise < 10000) {
-      priceHousing.setCustomValidity('Минимальня цена за ночь в доме 10000 руб.');
-    } else if (prise > 1000000) {
-      priceHousing.setCustomValidity('Максимальная цена за ночь не может превышать 1000000 руб.');
-    } else {
-      priceHousing.setCustomValidity('');
+  var validatesFormPrise = function (evt) {
+    var target = evt.target;
+    if (target.value === 'bungalo') {
+      priceHousing.setAttribute('min', '0');
+    } else if (target.value === 'flat') {
+      priceHousing.setAttribute('min', '1000');
+    } else if (target.value === 'house') {
+      priceHousing.setAttribute('min', '5000');
+    } else if (target.value === 'palace') {
+      priceHousing.setAttribute('min', '10000');
     }
   };
 
@@ -203,9 +198,9 @@
     } else if (target.value === 'flat') {
       priceHousing.setAttribute('placeholder', '1000');
     } else if (target.value === 'house') {
-      priceHousing.setAttribute('placeholder', '5000')
+      priceHousing.setAttribute('placeholder', '5000');
     } else if (target.value === 'palace') {
-      priceHousing.setAttribute('placeholder', '10000')
+      priceHousing.setAttribute('placeholder', '10000');
     }
   };
 
@@ -261,12 +256,11 @@
     adForm.classList.remove('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE + MAP_PIN_HEIGHT_ARROW);
 
-    adForm.addEventListener('input', validatesFormPrise);
-
     adForm.addEventListener('change', function (evt) {
       validatesFormRoomsAndGuests();
       changePrisePlaceholder(evt);
       synchronizesCheckTime(evt);
+      validatesFormPrise(evt);
     });
 
     adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
