@@ -13,7 +13,6 @@
       case 'bungalo': swap = 'Бунгало'; break;
       case 'house': swap = 'Дом'; break;
       case 'palace': swap = 'Дворец'; break;
-      default: swap = 'Неизвестно'; break;
     }
     return swap;
   };
@@ -66,9 +65,10 @@
     return cardFragment;
   };
 
+  returnCard(0);
 
   window.card = {
-    return: returnCard
+    return: cardFragment
   };
 
 })();

@@ -3,17 +3,10 @@
 (function () {
 
   var ENTER_KEY = 'Enter';
-  var ESC_KEY = 'Escape';
   var MAIN_MOUSE_BUTTON = 0;
 
   var isEnterEvent = function (evt, action) {
     if (evt.key === ENTER_KEY) {
-      action();
-    }
-  };
-
-  var isEscEvent = function (evt, action) {
-    if (evt.key === ESC_KEY) {
       action();
     }
   };
@@ -31,9 +24,7 @@
   window.util = {
     randomInteger: randomInteger,
     isEnterEvent: isEnterEvent,
-    isMainButtonMouseEvent: isMainButtonMouseEvent,
-    isEscEvent: isEscEvent,
-    ENTER_KEY: ENTER_KEY
+    isMainButtonMouseEvent: isMainButtonMouseEvent
   };
 
 })();
