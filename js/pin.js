@@ -15,9 +15,9 @@
     pinFragment.appendChild(pinElement);
   };
 
-  for (var i = 0; i < 8; i++) {
-    generatePinElement(ads[i]);
-  }
+  ads.forEach(function (item) {
+    generatePinElement(item);
+  });
 
   window.pin = {
     return: pinFragment
