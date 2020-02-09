@@ -4,7 +4,7 @@
   var URL = 'https://js.dump.academy/keksobooking/data';
 
   var load = function (onload) {
-    var xhr = new XMLHttpRequest;
+    var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
 
