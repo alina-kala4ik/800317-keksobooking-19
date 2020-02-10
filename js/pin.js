@@ -5,7 +5,6 @@
   var AD_PIN_HEIGHT = 70;
   var AD_PIN_WIDTH = 50;
 
-  var ads = window.data.ads;
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinFragment = document.createDocumentFragment();
 
@@ -19,13 +18,10 @@
     pinFragment.appendChild(pinElement);
   };
 
-  ads.forEach(function (item, index) {
-    generatePinElement(item, index);
-  });
+  window.backend.load(generatePinElement);
 
   window.pin = {
     return: pinFragment
   };
 
 })();
-
