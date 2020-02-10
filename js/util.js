@@ -32,7 +32,6 @@
     randomInteger: randomInteger,
     isEnterEvent: isEnterEvent,
     isMainButtonMouseEvent: isMainButtonMouseEvent,
-    ENTER_KEY: ENTER_KEY,
     isEscEvent: isEscEvent
   };
 
