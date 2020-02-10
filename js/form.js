@@ -141,6 +141,14 @@
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
+
+    mapPinMain.addEventListener('mousedown', function (evt) {
+      window.util.isMainButtonMouseEvent(evt, activatesPage);
+    }, {once: true});
+
+    mapPinMain.addEventListener('keydown', function (evt) {
+      window.util.isEnterEvent(evt, activatesPage);
+    }, {once: true});
   };
 
   deactivatesPage();
@@ -173,13 +181,5 @@
       item.classList.remove('hidden');
     });
   };
-
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    window.util.isMainButtonMouseEvent(evt, activatesPage);
-  });
-
-  mapPinMain.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, activatesPage);
-  });
 
 })();
