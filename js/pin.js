@@ -15,7 +15,7 @@
       pinElement.style.top = ad[i].location.y - AD_PIN_HEIGHT + 'px';
       pinElement.querySelector('img').setAttribute('src', ad[i].author.avatar);
       pinElement.querySelector('img').setAttribute('alt', ad[i].offer.title);
-      pinElement.querySelector('img').setAttribute('i', i);
+      pinElement.setAttribute('data-i', i);
       pinFragment.appendChild(pinElement);
     }
   };
