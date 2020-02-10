@@ -11,9 +11,9 @@
     mapPins.appendChild(window.pin.return);
   };
 
-  // mapPinMain.addEventListener('mousedown', function (evt) {
-  //   window.util.isMainButtonMouseEvent(evt, returnPinsAndCard);
-  // });
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    window.util.isMainButtonMouseEvent(evt, returnPinsAndCard);
+  });
 
   mapPinMain.addEventListener('keydown', function (evt) {
     window.util.isEnterEvent(evt, returnPinsAndCard);

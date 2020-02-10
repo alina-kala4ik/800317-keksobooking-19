@@ -22,6 +22,7 @@
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
   var main = document.querySelector('main');
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
 
   var validatesFormRoomsAndGuests = function () {
     var rooms = Number(roomNumber.value);
@@ -70,16 +71,26 @@
     }
   };
 
+  var resetForm = function () {
+    adForm.reset();
+    priceHousing.setAttribute('placeholder', '5000');
+    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
+  };
+
   var successSend = function () {
     deactivatesPage();
 
     var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     allPins.forEach(function (item) {
-      item.parentNode.removeChild(item);
+      item.classList.add('hidden');
     });
 
     var popup = document.querySelector('.popup');
-    popup.parentNode.removeChild(popup);
+    if (popup) {
+      popup.parentNode.removeChild(popup);
+    }
+
+    resetForm();
 
     var successMessage = successMessageTemplate.cloneNode(true);
     document.body.insertAdjacentElement('afterbegin', successMessage);
@@ -151,10 +162,16 @@
       validatesFormPrice(evt);
     });
 
-    // adFormSubmit.addEventListener('click', function (evt) {
-    //   evt.preventDefault();
-    //   validatesFormRoomsAndGuests();
-    // });
+    adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
+
+    adFormReset.addEventListener('click', function () {
+      resetForm();
+    });
+
+    var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    allPins.forEach(function (item) {
+      item.classList.remove('hidden');
+    });
   };
 
   mapPinMain.addEventListener('mousedown', function (evt) {
