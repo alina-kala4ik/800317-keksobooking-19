@@ -10,7 +10,10 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      onload(xhr.response);
+      switch (xhr.status) {
+        case 200: onload(xhr.response); break;
+        default: throw new Error('Ошибка ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
     xhr.open('GET', URL_GET_DATA);
@@ -23,7 +26,15 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      onLoad();
+      switch (xhr.status) {
+        case 200: onLoad(); break;
+        case 400: onError(); break;
+        case 403: onError(); break;
+        case 402: onError(); break;
+        case 404: onError(); break;
+        case 500: onError(); break;
+        default: throw new Error('Ошибка ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
     xhr.addEventListener('error', function () {
