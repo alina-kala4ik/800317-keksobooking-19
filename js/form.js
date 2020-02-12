@@ -2,8 +2,6 @@
 
 (function () {
 
-  var MAP_PIN_SIZE = 65;
-  var MAP_PIN_HEIGHT_ARROW = 19;
   var MAP_PIN_X = 570;
   var MAP_PIN_Y = 375;
 
@@ -74,7 +72,7 @@
   var resetForm = function () {
     adForm.reset();
     priceHousing.setAttribute('placeholder', '5000');
-    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
+    address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE / 2);
   };
 
   var successSend = function () {
@@ -140,7 +138,7 @@
     });
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
-    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE / 2);
+    address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE / 2);
 
     mapPinMain.addEventListener('mousedown', function (evt) {
       window.util.isMainButtonMouseEvent(evt, activatesPage);
@@ -162,7 +160,7 @@
     });
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    address.value = Math.ceil(MAP_PIN_X + MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + MAP_PIN_SIZE + MAP_PIN_HEIGHT_ARROW);
+    address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE + window.util.MAP_PIN_HEIGHT_ARROW);
 
     adForm.addEventListener('change', function (evt) {
       validatesFormRoomsAndGuests();
