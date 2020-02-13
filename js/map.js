@@ -7,17 +7,9 @@
   var filtersContainer = document.querySelector('.map__filters-container');
   var mapPinMain = document.querySelector('.map__pin--main');
 
-  var returnPinsAndCard = function () {
+  var returnPins = function () {
     mapPins.appendChild(window.pin.return);
   };
-
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    window.util.isMainButtonMouseEvent(evt, returnPinsAndCard);
-  });
-
-  mapPinMain.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, returnPinsAndCard);
-  });
 
   var openPopup = function (pressPin) {
     var unnecessaryMapCard = document.querySelector('.map__card');
@@ -54,10 +46,27 @@
     }
   };
 
-  mapPins.addEventListener('click', isAd);
+  var activatesPage = function () {
+    mapPins.addEventListener('click', isAd);
 
-  mapPins.addEventListener('keydown', function () {
-    window.util.isEnterEvent(isAd);
-  });
+    mapPins.addEventListener('keydown', function () {
+      window.util.isEnterEvent(isAd);
+    });
+  };
+
+  var mapPinMainMousedownHandler = function (evt) {
+    window.util.isMainButtonMouseEvent(evt, returnPins);
+    window.util.isMainButtonMouseEvent(evt, activatesPage);
+    mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
+  };
+
+  var mapPinMainKeydownHandler = function (evt) {
+    window.util.isEnterEvent(evt, returnPins);
+    window.util.isEnterEvent(evt, activatesPage);
+    mapPinMain.removeEventListener('mousedown', mapPinMainMousedownHandler);
+  };
+
+  mapPinMain.addEventListener('mousedown', mapPinMainMousedownHandler, {once: true});
+  mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler, {once: true});
 
 })();
