@@ -4,12 +4,15 @@
 
   var MAP_PIN_X = 570;
   var MAP_PIN_Y = 375;
+  var ERROR_BORDER = '1px solid #f20000';
+  var NORMAL_BORDER = '1px solid #d9d9d3';
 
   var allForms = document.querySelectorAll('fieldset');
   var mapFilters = document.querySelectorAll('.map__filters select');
   var mapPinMain = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
+  var adTitle = adForm.querySelector('#title');
   var address = document.querySelector('#address');
   var roomNumber = adForm.querySelector('#room_number');
   var capacity = adForm.querySelector('#capacity');
@@ -22,19 +25,30 @@
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
   var adFormReset = adForm.querySelector('.ad-form__reset');
 
+  var validatesTitle = function () {
+    if (!adTitle.checkValidity()) {
+      adTitle.style.border = ERROR_BORDER;
+    }
+  };
+
   var validatesFormRoomsAndGuests = function () {
     var rooms = Number(roomNumber.value);
     var guests = Number(capacity.value);
     if (rooms === 1 && (guests > 1 || guests === 0)) {
       roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
+      roomNumber.style.border = ERROR_BORDER;
     } else if (rooms === 2 && (guests > 2 || guests === 0)) {
       roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
+      roomNumber.style.border = ERROR_BORDER;
     } else if (rooms === 3 && guests === 0) {
       roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
+      roomNumber.style.border = ERROR_BORDER;
     } else if (rooms === 100 && guests > 0) {
       roomNumber.setCustomValidity('Нужно выбрать меньшее количество комнат');
+      roomNumber.style.border = ERROR_BORDER;
     } else {
       roomNumber.setCustomValidity('');
+      roomNumber.style.border = NORMAL_BORDER;
     }
   };
 
@@ -55,6 +69,12 @@
     }
   };
 
+  var selectInvalidFormPrise = function () {
+    if (!priceHousing.checkValidity()) {
+      priceHousing.style.border = ERROR_BORDER;
+    }
+  };
+
   var synchronizesCheckTime = function (evt) {
     var target = evt.target;
     if (target.value === '12:00') {
@@ -67,6 +87,10 @@
       checkin.value = '14:00';
       checkout.value = '14:00';
     }
+  };
+
+  var removeErrorBorder = function (evt) {
+    evt.target.style.border = NORMAL_BORDER;
   };
 
   var resetForm = function () {
@@ -163,12 +187,20 @@
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE + window.util.MAP_PIN_HEIGHT_ARROW);
 
     adForm.addEventListener('change', function (evt) {
-      validatesFormRoomsAndGuests();
       synchronizesCheckTime(evt);
       validatesFormPrice(evt);
     });
 
-    adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
+    adFormSubmit.addEventListener('click', function (evt) {
+      validatesTitle();
+      validatesFormRoomsAndGuests();
+      validatesFormPrice(evt);
+      selectInvalidFormPrise();
+    });
+
+    adForm.addEventListener('input', function (evt) {
+      removeErrorBorder(evt);
+    });
 
     adFormReset.addEventListener('click', function () {
       resetForm();
