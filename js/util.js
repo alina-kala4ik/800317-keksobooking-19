@@ -36,7 +36,8 @@
     isMainButtonMouseEvent: isMainButtonMouseEvent,
     isEscEvent: isEscEvent,
     MAP_PIN_SIZE: MAP_PIN_SIZE,
-    MAP_PIN_HEIGHT_ARROW: MAP_PIN_HEIGHT_ARROW
+    MAP_PIN_HEIGHT_ARROW: MAP_PIN_HEIGHT_ARROW,
+    ENTER_KEY: ENTER_KEY
   };
 
 })();
