@@ -17,6 +17,12 @@
       unnecessaryMapCard.parentNode.removeChild(unnecessaryMapCard);
     }
 
+    var allPins = mapPins.querySelectorAll('.map__pin');
+    allPins.forEach(function (item) {
+      item.classList.remove('map__pin--active');
+    });
+    pressPin.classList.add('map__pin--active');
+
     var i = pressPin.getAttribute('data-i');
     map.insertBefore(window.card.return(i), filtersContainer);
 
@@ -24,7 +30,8 @@
     var popupClose = document.querySelector('.popup__close');
 
     var popupCloseEventHandler = function () {
-      newMapCard.style.display = 'none';
+      newMapCard.parentNode.removeChild(newMapCard);
+      pressPin.classList.remove('map__pin--active');
     };
 
     popupClose.addEventListener('click', popupCloseEventHandler);
@@ -42,11 +49,6 @@
       } else if (evt.target.tagName === 'BUTTON') {
         pressPin = evt.target;
       }
-      var allPins = mapPins.querySelectorAll('.map__pin');
-      allPins.forEach(function (item) {
-        item.classList.remove('map__pin--active');
-      });
-      pressPin.classList.add('map__pin--active');
       openPopup(pressPin);
     }
   };
