@@ -24,21 +24,26 @@
     pressPin.classList.add('map__pin--active');
 
     var i = pressPin.getAttribute('data-i');
-    map.insertBefore(window.card.return(i), filtersContainer);
 
-    var newMapCard = document.querySelector('.map__card');
-    var popupClose = document.querySelector('.popup__close');
+    var cloneData = function (ads) {
+      map.insertBefore(window.card.return(ads[i]), filtersContainer);
+      var newMapCard = document.querySelector('.map__card');
+      var popupClose = document.querySelector('.popup__close');
 
-    var popupCloseEventHandler = function () {
-      newMapCard.parentNode.removeChild(newMapCard);
-      pressPin.classList.remove('map__pin--active');
+      var popupCloseEventHandler = function () {
+        newMapCard.parentNode.removeChild(newMapCard);
+        pressPin.classList.remove('map__pin--active');
+      };
+
+      popupClose.addEventListener('click', popupCloseEventHandler);
+
+      document.addEventListener('keydown', function (evtClose) {
+        window.util.isEscEvent(evtClose, popupCloseEventHandler);
+      });
     };
 
-    popupClose.addEventListener('click', popupCloseEventHandler);
+    window.backend.load(cloneData);
 
-    document.addEventListener('keydown', function (evtClose) {
-      window.util.isEscEvent(evtClose, popupCloseEventHandler);
-    });
   };
 
   var isAd = function (evt) {
