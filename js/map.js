@@ -42,6 +42,11 @@
       } else if (evt.target.tagName === 'BUTTON') {
         pressPin = evt.target;
       }
+      var allPins = mapPins.querySelectorAll('.map__pin');
+      allPins.forEach(function (item) {
+        item.classList.remove('map__pin--active');
+      });
+      pressPin.classList.add('map__pin--active');
       openPopup(pressPin);
     }
   };
