@@ -14,7 +14,6 @@
   var copyData = function (adsBackend) {
     adsLocal = adsBackend;
     filterQualityPins(adsLocal);
-    // filterTypeHousing();
   };
 
   window.backend.load(copyData);
@@ -29,6 +28,7 @@
       return element.offer.type === houseTypeChech;
     });
     filterQualityPins(typeHouseMassive);
+    console.log(typeHouseMassive)
   };
 
   var updatePins = function () {
