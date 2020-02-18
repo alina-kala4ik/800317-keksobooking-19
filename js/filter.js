@@ -28,7 +28,6 @@
       return element.offer.type === houseTypeChech;
     });
     filterQualityPins(typeHouseMassive);
-    console.log(typeHouseMassive)
   };
 
   var updatePins = function () {
