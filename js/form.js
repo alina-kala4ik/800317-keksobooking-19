@@ -23,6 +23,8 @@
   var main = document.querySelector('main');
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
   var adFormReset = adForm.querySelector('.ad-form__reset');
+  var fileChooserPhoto = document.querySelector('.ad-form__upload input[type=file]');
+  var fileChooserAvatar = document.querySelector('.ad-form__field input[type=file]');
 
   var validatesFormRoomsAndGuests = function () {
     var rooms = Number(roomNumber.value);
@@ -149,6 +151,9 @@
     mapPinMain.addEventListener('keydown', function (evt) {
       window.util.isEnterEvent(evt, activatesPage);
     }, {once: true});
+
+    fileChooserPhoto.removeEventListener('change', window.photo.house);
+    fileChooserAvatar.removeEventListener('change', window.photo.avatar);
   };
 
   deactivatesPage();
@@ -180,6 +185,9 @@
     allPins.forEach(function (item) {
       item.classList.remove('hidden');
     });
+
+    fileChooserPhoto.addEventListener('change', window.photo.house);
+    fileChooserAvatar.addEventListener('change', window.photo.avatar);
   };
 
 })();
