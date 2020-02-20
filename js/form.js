@@ -16,7 +16,6 @@
   var address = document.querySelector('#address');
   var roomNumber = adForm.querySelector('#room_number');
   var capacity = adForm.querySelector('#capacity');
-  var adFormSubmit = adForm.querySelector('.ad-form__submit');
   var priceHousing = adForm.querySelector('#price');
   var checkin = adForm.querySelector('#timein');
   var checkout = adForm.querySelector('#timeout');
@@ -24,35 +23,49 @@
   var main = document.querySelector('main');
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
   var adFormReset = adForm.querySelector('.ad-form__reset');
+  var typeHousing = adForm.querySelector('#type');
 
   var validatesTitle = function () {
+    adTitle.setAttribute('required', true);
+    adTitle.setAttribute('minlength', '30');
+    adTitle.setAttribute('maxlength', '100');
     if (!adTitle.checkValidity()) {
       adTitle.style.border = ERROR_BORDER;
     }
   };
 
-  var validatesFormRoomsAndGuests = function () {
+  var validatesRoomsAndGuests = function () {
     var rooms = Number(roomNumber.value);
     var guests = Number(capacity.value);
     if (rooms === 1 && (guests > 1 || guests === 0)) {
       roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
-      roomNumber.style.border = ERROR_BORDER;
     } else if (rooms === 2 && (guests > 2 || guests === 0)) {
       roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
-      roomNumber.style.border = ERROR_BORDER;
     } else if (rooms === 3 && guests === 0) {
       roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
-      roomNumber.style.border = ERROR_BORDER;
     } else if (rooms === 100 && guests > 0) {
       roomNumber.setCustomValidity('Нужно выбрать меньшее количество комнат');
-      roomNumber.style.border = ERROR_BORDER;
     } else {
       roomNumber.setCustomValidity('');
       roomNumber.style.border = NORMAL_BORDER;
     }
   };
 
-  var validatesFormPrice = function (evt) {
+  var selectInvalidRoom = function () {
+    var rooms = Number(roomNumber.value);
+    var guests = Number(capacity.value);
+    if (rooms === 1 && (guests > 1 || guests === 0)) {
+      roomNumber.style.border = ERROR_BORDER;
+    } else if (rooms === 2 && (guests > 2 || guests === 0)) {
+      roomNumber.style.border = ERROR_BORDER;
+    } else if (rooms === 3 && guests === 0) {
+      roomNumber.style.border = ERROR_BORDER;
+    } else if (rooms === 100 && guests > 0) {
+      roomNumber.style.border = ERROR_BORDER;
+    }
+  };
+
+  var synchronizesPriseAndType = function (evt) {
     var target = evt.target;
     if (target.value === 'bungalo') {
       priceHousing.setAttribute('placeholder', '0');
@@ -69,8 +82,18 @@
     }
   };
 
-  var selectInvalidFormPrise = function () {
+  var validatePrise = function () {
+    priceHousing.setAttribute('required', true);
     if (!priceHousing.checkValidity()) {
+      priceHousing.style.border = ERROR_BORDER;
+    }
+    if (typeHousing === 'bungalo' && priceHousing < 0) {
+      priceHousing.style.border = ERROR_BORDER;
+    } else if (typeHousing === 'flat' && priceHousing < 1000) {
+      priceHousing.style.border = ERROR_BORDER;
+    } else if (typeHousing === 'house' && priceHousing < 5000) {
+      priceHousing.style.border = ERROR_BORDER;
+    } else if (typeHousing === 'palace' && priceHousing < 10000) {
       priceHousing.style.border = ERROR_BORDER;
     }
   };
@@ -172,7 +195,12 @@
 
   var adFormSubmitHandler = function (evt) {
     evt.preventDefault();
-    window.backend.send(new FormData(adForm), successSend, errorSend);
+    validatesTitle();
+    validatePrise();
+    selectInvalidRoom();
+    if (roomNumber.checkValidity() && priceHousing.checkValidity() && adTitle.checkValidity()) {
+      window.backend.send(new FormData(adForm), successSend, errorSend);
+    }
   };
 
   var deactivatesPage = function () {
@@ -200,11 +228,8 @@
     mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler, {once: true});
 
     adForm.removeEventListener('change', synchronizesCheckTime);
-    adForm.removeEventListener('change', validatesFormPrice);
-    adFormSubmit.removeEventListener('click', validatesTitle);
-    adFormSubmit.removeEventListener('click', validatesFormRoomsAndGuests);
-    adFormSubmit.removeEventListener('click', validatesFormPrice);
-    adFormSubmit.removeEventListener('click', selectInvalidFormPrise);
+    adForm.removeEventListener('change', synchronizesPriseAndType);
+    adForm.removeEventListener('change', validatesRoomsAndGuests);
     adForm.removeEventListener('input', removeErrorBorder);
     adFormReset.removeEventListener('click', resetForm);
     adForm.removeEventListener('submit', adFormSubmitHandler);
@@ -229,11 +254,8 @@
     });
 
     adForm.addEventListener('change', synchronizesCheckTime);
-    adForm.addEventListener('change', validatesFormPrice);
-    adFormSubmit.addEventListener('click', validatesTitle);
-    adFormSubmit.addEventListener('click', validatesFormRoomsAndGuests);
-    adFormSubmit.addEventListener('click', validatesFormPrice);
-    adFormSubmit.addEventListener('click', selectInvalidFormPrise);
+    adForm.addEventListener('change', synchronizesPriseAndType);
+    adForm.addEventListener('change', validatesRoomsAndGuests);
     adForm.addEventListener('input', removeErrorBorder);
     adFormReset.addEventListener('click', resetForm);
     adForm.addEventListener('submit', adFormSubmitHandler);
