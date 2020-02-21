@@ -224,8 +224,6 @@
 
     var mapPinMainKeydownHandler = function (evt) {
       window.util.isEnterEvent(evt, activatesPage);
-    }, {once: true});
-
       mapPinMain.removeEventListener('mousedown', mapPinMainMousedownHandler);
     };
 
