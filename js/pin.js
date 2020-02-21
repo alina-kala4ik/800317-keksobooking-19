@@ -33,10 +33,9 @@
     });
   };
 
-  window.backend.load(generatePinElement);
-
   window.pin = {
-    return: pinFragment
+    return: pinFragment,
+    generate: generatePinElement
   };
 
 })();
