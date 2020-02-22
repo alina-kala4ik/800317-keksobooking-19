@@ -27,7 +27,6 @@
             window.map.openPopup(pinElement, item);
           }
         });
-
         pinFragment.appendChild(pinElement);
       }
     });
