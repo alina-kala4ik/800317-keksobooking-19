@@ -26,12 +26,12 @@
     }
   };
 
-  var randomInteger = function (min, max) {
+  var getRandomInteger = function (min, max) {
     return Math.floor(min + Math.random() * (max + 1 - min));
   };
 
   window.util = {
-    randomInteger: randomInteger,
+    randomInteger: getRandomInteger,
     isEnterEvent: isEnterEvent,
     isMainButtonMouseEvent: isMainButtonMouseEvent,
     isEscEvent: isEscEvent,

@@ -6,31 +6,41 @@
   var MAP_PIN_Y = 375;
   var ERROR_BORDER = '1px solid #f20000';
   var NORMAL_BORDER = '1px solid #d9d9d3';
+  var MIN_LENGTH_TITLE = 30;
+  var MAX_LENGTH_TITLE = 100;
+  var MIN_PRISE_FOR_BUNGALO = 0;
+  var MIN_PRISE_FOR_FLAT = 1000;
+  var MIN_PRISE_FOR_HOUSE = 5000;
+  var MIN_PRISE_FOR_PALACE = 10000;
 
-  var allForms = document.querySelectorAll('fieldset');
-  var mapFilters = document.querySelectorAll('.map__filters select');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var map = document.querySelector('.map');
-  var adForm = document.querySelector('.ad-form');
+  var main = document.querySelector('main');
+  var allForms = main.querySelectorAll('fieldset');
+  var mapFilters = main.querySelectorAll('.map__filters select');
+
+  var map = main.querySelector('.map');
+  var mapPinMain = map.querySelector('.map__pin--main');
+
+  var adForm = main.querySelector('.ad-form');
   var adTitle = adForm.querySelector('#title');
-  var address = document.querySelector('#address');
+  var address = adForm.querySelector('#address');
   var roomNumber = adForm.querySelector('#room_number');
   var capacity = adForm.querySelector('#capacity');
   var priceHousing = adForm.querySelector('#price');
   var checkin = adForm.querySelector('#timein');
   var checkout = adForm.querySelector('#timeout');
-  var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
-  var main = document.querySelector('main');
-  var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
-  var adFormReset = adForm.querySelector('.ad-form__reset');
-  var fileChooserPhoto = document.querySelector('.ad-form__upload input[type=file]');
-  var fileChooserAvatar = document.querySelector('.ad-form__field input[type=file]');
   var typeHousing = adForm.querySelector('#type');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
+  var fileChooserPhoto = adForm.querySelector('.ad-form__upload input[type=file]');
+  var fileChooserAvatar = adForm.querySelector('.ad-form__field input[type=file]');
+
+
+  var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+  var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 
   var validatesTitle = function () {
     adTitle.setAttribute('required', true);
-    adTitle.setAttribute('minlength', '30');
-    adTitle.setAttribute('maxlength', '100');
+    adTitle.setAttribute('minlength', MIN_LENGTH_TITLE);
+    adTitle.setAttribute('maxlength', MAX_LENGTH_TITLE);
     if (!adTitle.checkValidity()) {
       adTitle.style.border = ERROR_BORDER;
     }
@@ -41,13 +51,13 @@
     var rooms = Number(roomNumber.value);
     var guests = Number(capacity.value);
     if (rooms === 1 && (guests > 1 || guests === 0)) {
-      roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
+      roomNumber.setCustomValidity('Нужно выбрать большее количество комнат для указанного количества гостей');
     } else if (rooms === 2 && (guests > 2 || guests === 0)) {
-      roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
+      roomNumber.setCustomValidity('Нужно выбрать большее количество комнат для указанного количества гостей');
     } else if (rooms === 3 && guests === 0) {
-      roomNumber.setCustomValidity('Нужно выбрать большее количество комнат');
+      roomNumber.setCustomValidity('Нужно выбрать большее количество комнат для указанного количества гостей');
     } else if (rooms === 100 && guests > 0) {
-      roomNumber.setCustomValidity('Нужно выбрать меньшее количество комнат');
+      roomNumber.setCustomValidity('Нужно выбрать меньшее количество комнат для указанного количества гостей');
     } else {
       roomNumber.setCustomValidity('');
       roomNumber.style.border = NORMAL_BORDER;
@@ -71,17 +81,17 @@
   var synchronizesPriseAndType = function (evt) {
     var target = evt.target;
     if (target.value === 'bungalo') {
-      priceHousing.setAttribute('placeholder', '0');
-      priceHousing.setAttribute('min', '0');
+      priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_BUNGALO);
+      priceHousing.setAttribute('min', MIN_PRISE_FOR_BUNGALO);
     } else if (target.value === 'flat') {
-      priceHousing.setAttribute('placeholder', '1000');
-      priceHousing.setAttribute('min', '1000');
+      priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_FLAT);
+      priceHousing.setAttribute('min', MIN_PRISE_FOR_FLAT);
     } else if (target.value === 'house') {
-      priceHousing.setAttribute('placeholder', '5000');
-      priceHousing.setAttribute('min', '5000');
+      priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_HOUSE);
+      priceHousing.setAttribute('min', MIN_PRISE_FOR_HOUSE);
     } else if (target.value === 'palace') {
-      priceHousing.setAttribute('placeholder', '10000');
-      priceHousing.setAttribute('min', '10000');
+      priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_PALACE);
+      priceHousing.setAttribute('min', MIN_PRISE_FOR_PALACE);
     }
   };
 
@@ -90,13 +100,13 @@
     if (!priceHousing.checkValidity()) {
       priceHousing.style.border = ERROR_BORDER;
     }
-    if (typeHousing === 'bungalo' && priceHousing < 0) {
+    if (typeHousing === 'bungalo' && priceHousing < MIN_PRISE_FOR_BUNGALO) {
       priceHousing.style.border = ERROR_BORDER;
-    } else if (typeHousing === 'flat' && priceHousing < 1000) {
+    } else if (typeHousing === 'flat' && priceHousing < MIN_PRISE_FOR_FLAT) {
       priceHousing.style.border = ERROR_BORDER;
-    } else if (typeHousing === 'house' && priceHousing < 5000) {
+    } else if (typeHousing === 'house' && priceHousing < MIN_PRISE_FOR_HOUSE) {
       priceHousing.style.border = ERROR_BORDER;
-    } else if (typeHousing === 'palace' && priceHousing < 10000) {
+    } else if (typeHousing === 'palace' && priceHousing < MIN_PRISE_FOR_PALACE) {
       priceHousing.style.border = ERROR_BORDER;
     }
   };
@@ -121,7 +131,7 @@
 
   var resetForm = function () {
     adForm.reset();
-    priceHousing.setAttribute('placeholder', '5000');
+    priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_HOUSE);
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE / 2);
   };
 

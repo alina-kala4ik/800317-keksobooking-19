@@ -2,10 +2,11 @@
 
 (function () {
 
-  var mapPins = document.querySelector('.map__pins');
   var map = document.querySelector('.map');
+  var mapPins = map.querySelector('.map__pins');
+  var mapPinMain = map.querySelector('.map__pin--main');
+
   var filtersContainer = document.querySelector('.map__filters-container');
-  var mapPinMain = document.querySelector('.map__pin--main');
 
   var returnPins = function () {
     mapPins.appendChild(window.pin.return);

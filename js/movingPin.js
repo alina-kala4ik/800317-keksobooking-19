@@ -7,11 +7,11 @@
   var MAX_COORDS_X_PIN_MAIN = 630;
 
   var mapPins = document.querySelector('.map__pins');
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var mapPinMain = mapPins.querySelector('.map__pin--main');
   var address = document.querySelector('#address');
+
   var maxCoordsYPinMain = mapPins.offsetWidth - (window.util.MAP_PIN_SIZE / 2);
   var minCoordsYPinMain = window.util.MAP_PIN_SIZE / -2;
-
 
   var getCoordsMapMain = function (evt, startCoords) {
 
