@@ -4,13 +4,8 @@
 
   var map = document.querySelector('.map');
   var mapPins = map.querySelector('.map__pins');
-  var mapPinMain = map.querySelector('.map__pin--main');
 
   var filtersContainer = document.querySelector('.map__filters-container');
-
-  var returnPins = function () {
-    mapPins.appendChild(window.pin.return);
-  };
 
   var openPopup = function (pressPin, ad) {
     var unnecessaryMapCard = document.querySelector('.map__card');
@@ -40,19 +35,6 @@
       window.util.isEscEvent(evtClose, popupCloseEventHandler);
     });
   };
-
-  var mapPinMainMousedownHandler = function (evt) {
-    window.util.isMainButtonMouseEvent(evt, returnPins);
-    mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
-  };
-
-  var mapPinMainKeydownHandler = function (evt) {
-    window.util.isEnterEvent(evt, returnPins);
-    mapPinMain.removeEventListener('mousedown', mapPinMainMousedownHandler);
-  };
-
-  mapPinMain.addEventListener('mousedown', mapPinMainMousedownHandler, {once: true});
-  mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler, {once: true});
 
   window.map = {
     openPopup: openPopup

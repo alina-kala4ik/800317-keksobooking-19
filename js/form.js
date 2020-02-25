@@ -12,6 +12,8 @@
   var MIN_PRISE_FOR_FLAT = 1000;
   var MIN_PRISE_FOR_HOUSE = 5000;
   var MIN_PRISE_FOR_PALACE = 10000;
+  var START_COORDS_X_MAP_PIN_MAIN = '570px';
+  var START_COORDS_Y_MAP_PIN_MAIN = '375px';
 
   var main = document.querySelector('main');
   var allForms = main.querySelectorAll('fieldset');
@@ -19,6 +21,7 @@
 
   var map = main.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
+  var mapPins = map.querySelector('.map__pins');
 
   var adForm = main.querySelector('.ad-form');
   var adTitle = adForm.querySelector('#title');
@@ -36,6 +39,8 @@
 
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+
+  var filtersForm = document.querySelector('.map__filters');
 
   var validatesTitle = function () {
     adTitle.setAttribute('required', true);
@@ -130,8 +135,20 @@
   };
 
   var resetForm = function () {
+    deactivatesPage();
+
     adForm.reset();
+    filtersForm.reset();
     priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_HOUSE);
+
+    var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    allPins.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+
+    mapPinMain.style.left = START_COORDS_X_MAP_PIN_MAIN;
+    mapPinMain.style.top = START_COORDS_Y_MAP_PIN_MAIN;
+
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE / 2);
   };
 
@@ -264,10 +281,7 @@
     adForm.classList.remove('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE + window.util.MAP_PIN_HEIGHT_ARROW);
 
-    var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    allPins.forEach(function (item) {
-      item.classList.remove('hidden');
-    });
+    mapPins.appendChild(window.pin.return);
 
     adForm.addEventListener('change', synchronizesCheckTime);
     adForm.addEventListener('change', synchronizesPriseAndType);
