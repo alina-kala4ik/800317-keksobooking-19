@@ -3,8 +3,9 @@
 (function () {
 
   var QUALITY_PINS = 5;
+  var DEBOUNCE_INTERVAL = 500;
+  var DEFAULT_FILTER_VALUE = 'any';
 
-  var mapFilters = document.querySelector('.map__filters');
   var mapPins = document.querySelector('.map__pins');
 
   var imputNameToArrayName = {
@@ -23,79 +24,63 @@
     'highMin': 50000
   };
 
-  var adsLocal = [];
   var filterValues = {
-    'type': 'any',
-    'price': 'any',
-    'rooms': 'any',
-    'guests': 'any',
+    'type': DEFAULT_FILTER_VALUE,
+    'price': DEFAULT_FILTER_VALUE,
+    'rooms': DEFAULT_FILTER_VALUE,
+    'guests': DEFAULT_FILTER_VALUE,
     'features': []
   };
-
-  var copyData = function (adsBackend) {
-    adsLocal = adsBackend;
-    filterQualityPins(adsLocal);
-  };
-
-  window.backend.load(copyData);
 
   var filterQualityPins = function (someMassive) {
     var qualityPinsMassive = someMassive.slice(0, QUALITY_PINS);
     window.pin.generate(qualityPinsMassive);
   };
 
-  var filtersAds = function (filter) {
-    var filteredArray = adsLocal
+  var filterСonditions = function (filters, arrayToFilter) {
+    var filteredArray = arrayToFilter
     .filter(function (element, i, array) {
-      if (filter.type === 'any') {
+      if (filters.type === DEFAULT_FILTER_VALUE) {
         return array;
       } else {
-        return element.offer.type === filter.type;
+        return element.offer.type === filters.type;
       }
     })
     .filter(function (element, i, array) {
-      if (filter.rooms === 'any') {
+      if (filters.rooms === DEFAULT_FILTER_VALUE) {
         return array;
       } else {
-        return element.offer.rooms.toString() === filter.rooms.toString();
+        return element.offer.rooms.toString() === filters.rooms.toString();
       }
     })
     .filter(function (element, i, array) {
-      if (filter.guests === 'any') {
+      if (filters.guests === DEFAULT_FILTER_VALUE) {
         return array;
       } else {
-        return element.offer.guests.toString() === filter.guests.toString();
+        return element.offer.guests.toString() === filters.guests.toString();
       }
     })
     .filter(function (element, i, array) {
-      if (filter.price === 'any') {
+      if (filters.price === DEFAULT_FILTER_VALUE) {
         return array;
       } else {
-        return element.offer.price >= priseStringToPriseNumber[filter.price + 'Min'] && element.offer.price <= priseStringToPriseNumber[filter.price + 'Max'];
+        return element.offer.price >= priseStringToPriseNumber[filters.price + 'Min'] && element.offer.price <= priseStringToPriseNumber[filters.price + 'Max'];
       }
     })
     .filter(function (element, i, array) {
-      if (filter.features.length === 0) {
+      if (filters.features.length === 0) {
         return array;
       } else {
         var isAllFeatures = true;
-        filter.features.forEach(function (item) {
+        filters.features.forEach(function (item) {
           isAllFeatures *= element.offer.features.includes(item);
         });
         return isAllFeatures;
       }
     });
-    window.pin.generate(filteredArray);
+    filterQualityPins(filteredArray);
+    updatePins();
   };
-
-  var mapFiltersChangeHandler = function () {
-    var unnecessaryMapCard = document.querySelector('.map__card');
-    if (unnecessaryMapCard) {
-      unnecessaryMapCard.parentNode.removeChild(unnecessaryMapCard);
-    }
-  };
-
-  mapFilters.addEventListener('change', mapFiltersChangeHandler);
 
   var updatePins = function () {
     var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -105,9 +90,13 @@
     mapPins.appendChild(window.pin.return);
   };
 
-  mapFilters.addEventListener('change', function (evt) {
-    filterValues.features = [];
+  var mapFiltersChangeHandler = function (evt, array) {
+    var unnecessaryMapCard = document.querySelector('.map__card');
+    if (unnecessaryMapCard) {
+      unnecessaryMapCard.parentNode.removeChild(unnecessaryMapCard);
+    }
     if (evt.target.name === 'features') {
+      filterValues.features = [];
       var checkedFeatures = document.querySelectorAll('.map__checkbox:checked');
       checkedFeatures.forEach(function (item) {
         filterValues.features.push(item.value);
@@ -116,8 +105,12 @@
       var name = imputNameToArrayName[evt.target.name];
       filterValues[name] = evt.target.value;
     }
-    filtersAds(filterValues);
-    updatePins();
-  });
+    setTimeout(filterСonditions, DEBOUNCE_INTERVAL, filterValues, array);
+  };
+
+  window.filter = {
+    qualityPins: filterQualityPins,
+    changeHandler: mapFiltersChangeHandler
+  };
 
 })();

@@ -9,14 +9,19 @@
   var pinFragment = document.createDocumentFragment();
 
   var generatePinElement = function (ads) {
-    ads.forEach(function (item, i) {
+    var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (allPins.length !== 0) {
+      allPins.forEach(function (item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+    ads.forEach(function (item) {
       if (item.offer !== undefined) {
         var pinElement = pinTemplate.cloneNode(true);
         pinElement.style.left = item.location.x - (AD_PIN_WIDTH / 2) + 'px';
         pinElement.style.top = item.location.y - AD_PIN_HEIGHT + 'px';
         pinElement.querySelector('img').setAttribute('src', item.author.avatar);
         pinElement.querySelector('img').setAttribute('alt', item.offer.title);
-        pinElement.setAttribute('data-i', i);
 
         pinElement.addEventListener('click', function () {
           window.map.openPopup(pinElement, item);

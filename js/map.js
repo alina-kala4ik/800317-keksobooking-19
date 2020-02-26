@@ -2,14 +2,10 @@
 
 (function () {
 
-  var mapPins = document.querySelector('.map__pins');
   var map = document.querySelector('.map');
-  var filtersContainer = document.querySelector('.map__filters-container');
-  var mapPinMain = document.querySelector('.map__pin--main');
+  var mapPins = map.querySelector('.map__pins');
 
-  var returnPins = function () {
-    mapPins.appendChild(window.pin.return);
-  };
+  var filtersContainer = document.querySelector('.map__filters-container');
 
   var openPopup = function (pressPin, ad) {
     var unnecessaryMapCard = document.querySelector('.map__card');
@@ -26,32 +22,25 @@
     map.insertBefore(window.card.return(ad), filtersContainer);
 
     var newMapCard = document.querySelector('.map__card');
-    var popupClose = document.querySelector('.popup__close');
+    var popupCloseButton = document.querySelector('.popup__close');
 
-    var popupCloseEventHandler = function () {
+    var popupClose = function () {
       newMapCard.parentNode.removeChild(newMapCard);
       pressPin.classList.remove('map__pin--active');
     };
 
-    popupClose.addEventListener('click', popupCloseEventHandler);
+    var popupCloseButtonClickHandler = function () {
+      popupClose();
+    };
 
-    document.addEventListener('keydown', function (evtClose) {
-      window.util.isEscEvent(evtClose, popupCloseEventHandler);
-    });
+    var escKeydownHandler = function (evt) {
+      window.util.isEscEvent(evt, popupClose);
+    };
+
+    popupCloseButton.addEventListener('click', popupCloseButtonClickHandler, {once: true});
+
+    document.body.addEventListener('keydown', escKeydownHandler, {once: true});
   };
-
-  var mapPinMainMousedownHandler = function (evt) {
-    window.util.isMainButtonMouseEvent(evt, returnPins);
-    mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
-  };
-
-  var mapPinMainKeydownHandler = function (evt) {
-    window.util.isEnterEvent(evt, returnPins);
-    mapPinMain.removeEventListener('mousedown', mapPinMainMousedownHandler);
-  };
-
-  mapPinMain.addEventListener('mousedown', mapPinMainMousedownHandler, {once: true});
-  mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler, {once: true});
 
   window.map = {
     openPopup: openPopup
