@@ -34,7 +34,9 @@
     };
 
     var escKeydownHandler = function (evt) {
-      window.util.isEscEvent(evt, popupClose);
+      if (document.querySelector('.map__card')) {
+        window.util.isEscEvent(evt, popupClose);
+      }
     };
 
     popupCloseButton.addEventListener('click', popupCloseButtonClickHandler, {once: true});

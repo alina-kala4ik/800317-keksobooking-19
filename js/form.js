@@ -153,6 +153,11 @@
       item.parentNode.removeChild(item);
     });
 
+    var unnecessaryMapCard = document.querySelector('.map__card');
+    if (unnecessaryMapCard) {
+      unnecessaryMapCard.parentNode.removeChild(unnecessaryMapCard);
+    }
+
     mapPinMain.style.left = START_COORDS_X_MAP_PIN_MAIN;
     mapPinMain.style.top = START_COORDS_Y_MAP_PIN_MAIN;
 
