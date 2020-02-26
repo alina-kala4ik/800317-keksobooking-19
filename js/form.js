@@ -40,7 +40,15 @@
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 
-  var filtersForm = document.querySelector('.map__filters');
+  var filtersForm = main.querySelector('.map__filters');
+
+  var adsLocal = [];
+
+  var copyData = function (adsBackend) {
+    adsLocal = adsBackend;
+  };
+
+  window.backend.load(copyData);
 
   var validatesTitle = function () {
     adTitle.setAttribute('required', true);
@@ -50,7 +58,6 @@
       adTitle.style.border = ERROR_BORDER;
     }
   };
-
 
   var validatesRoomsAndGuests = function () {
     var rooms = Number(roomNumber.value);
@@ -233,6 +240,10 @@
     }
   };
 
+  var filtersFormChangeHandler = function (evt) {
+    window.filter.changeHandler(evt, adsLocal);
+  };
+
   var deactivatesPage = function () {
     allForms.forEach(function (item) {
       item.setAttribute('disabled', 'true');
@@ -266,6 +277,8 @@
 
     fileChooserPhoto.removeEventListener('change', window.photo.house);
     fileChooserAvatar.removeEventListener('change', window.photo.avatar);
+
+    filtersForm.removeEventListener('change', filtersFormChangeHandler);
   };
 
   deactivatesPage();
@@ -281,6 +294,7 @@
     adForm.classList.remove('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE + window.util.MAP_PIN_HEIGHT_ARROW);
 
+    window.filter.qualityPins(adsLocal);
     mapPins.appendChild(window.pin.return);
 
     adForm.addEventListener('change', synchronizesCheckTime);
@@ -292,6 +306,8 @@
 
     fileChooserPhoto.addEventListener('change', window.photo.house);
     fileChooserAvatar.addEventListener('change', window.photo.avatar);
+
+    filtersForm.addEventListener('change', filtersFormChangeHandler);
   };
 
 })();

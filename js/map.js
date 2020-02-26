@@ -22,18 +22,24 @@
     map.insertBefore(window.card.return(ad), filtersContainer);
 
     var newMapCard = document.querySelector('.map__card');
-    var popupClose = document.querySelector('.popup__close');
+    var popupCloseButton = document.querySelector('.popup__close');
 
-    var popupCloseEventHandler = function () {
+    var popupClose = function () {
       newMapCard.parentNode.removeChild(newMapCard);
       pressPin.classList.remove('map__pin--active');
     };
 
-    popupClose.addEventListener('click', popupCloseEventHandler);
+    var popupCloseButtonClickHandler = function () {
+      popupClose();
+    };
 
-    document.addEventListener('keydown', function (evtClose) {
-      window.util.isEscEvent(evtClose, popupCloseEventHandler);
-    });
+    var escKeydownHandler = function (evt) {
+      window.util.isEscEvent(evt, popupClose);
+    };
+
+    popupCloseButton.addEventListener('click', popupCloseButtonClickHandler, {once: true});
+
+    document.body.addEventListener('keydown', escKeydownHandler, {once: true});
   };
 
   window.map = {
