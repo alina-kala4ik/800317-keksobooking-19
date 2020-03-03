@@ -8,19 +8,19 @@
   var MAP_PIN_SIZE = 65;
   var MAP_PIN_HEIGHT_ARROW = 19;
 
-  var isEnterEvent = function (evt, action) {
+  var getSomethingIfEnterEvent = function (evt, action) {
     if (evt.key === ENTER_KEY) {
       action();
     }
   };
 
-  var isEscEvent = function (evt, action) {
+  var getSomethingIfEscEvent = function (evt, action) {
     if (evt.key === ESC_KEY) {
       action();
     }
   };
 
-  var isMainButtonMouseEvent = function (evt, action) {
+  var getSomethingIfMainButtonMouseEvent = function (evt, action) {
     if (evt.button === MAIN_MOUSE_BUTTON) {
       action();
     }
@@ -32,9 +32,9 @@
 
   window.util = {
     randomInteger: getRandomInteger,
-    isEnterEvent: isEnterEvent,
-    isMainButtonMouseEvent: isMainButtonMouseEvent,
-    isEscEvent: isEscEvent,
+    isEnterEvent: getSomethingIfEnterEvent,
+    isMainButtonMouseEvent: getSomethingIfMainButtonMouseEvent,
+    isEscEvent: getSomethingIfEscEvent,
     MAP_PIN_SIZE: MAP_PIN_SIZE,
     MAP_PIN_HEIGHT_ARROW: MAP_PIN_HEIGHT_ARROW,
     ENTER_KEY: ENTER_KEY
