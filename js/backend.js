@@ -28,12 +28,7 @@
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case 200: onLoad(); break;
-        case 400: onError(); break;
-        case 403: onError(); break;
-        case 402: onError(); break;
-        case 404: onError(); break;
-        case 500: onError(); break;
-        default: throw new Error('Ошибка ' + xhr.status + ' ' + xhr.statusText);
+        default: onError();
       }
     });
 
