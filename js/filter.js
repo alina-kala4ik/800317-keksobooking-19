@@ -15,7 +15,9 @@
     'housing-guests': 'guests',
   };
 
-  var priseStringToPriseNumber = {
+  var priseStringToPriceNumber = {
+    'anyMax': Infinity,
+    'anyMin': 0,
     'middleMax': 50000,
     'middleMin': 10000,
     'lowMax': 10000,
@@ -37,46 +39,28 @@
     window.pin.generate(qualityPinsMassive);
   };
 
+  var featuresFilter = function (filters, element) {
+    var isAllFeatures = true;
+    if (filters.features.length !== 0) {
+      filters.features.forEach(function (item) {
+        isAllFeatures *= element.offer.features.includes(item);
+      });
+    }
+    return isAllFeatures;
+  };
+
+  var stringValueFilter = function (filterValue, elementValue) {
+    return filterValue === DEFAULT_FILTER_VALUE || filterValue.toString() === elementValue.toString();
+  };
+
   var filterСonditions = function (filters, arrayToFilter) {
-    var filteredArray = arrayToFilter
-    .filter(function (element, i, array) {
-      if (filters.type === DEFAULT_FILTER_VALUE) {
-        return array;
-      } else {
-        return element.offer.type === filters.type;
-      }
-    })
-    .filter(function (element, i, array) {
-      if (filters.rooms === DEFAULT_FILTER_VALUE) {
-        return array;
-      } else {
-        return element.offer.rooms.toString() === filters.rooms.toString();
-      }
-    })
-    .filter(function (element, i, array) {
-      if (filters.guests === DEFAULT_FILTER_VALUE) {
-        return array;
-      } else {
-        return element.offer.guests.toString() === filters.guests.toString();
-      }
-    })
-    .filter(function (element, i, array) {
-      if (filters.price === DEFAULT_FILTER_VALUE) {
-        return array;
-      } else {
-        return element.offer.price >= priseStringToPriseNumber[filters.price + 'Min'] && element.offer.price <= priseStringToPriseNumber[filters.price + 'Max'];
-      }
-    })
-    .filter(function (element, i, array) {
-      if (filters.features.length === 0) {
-        return array;
-      } else {
-        var isAllFeatures = true;
-        filters.features.forEach(function (item) {
-          isAllFeatures *= element.offer.features.includes(item);
-        });
-        return isAllFeatures;
-      }
+    var filteredArray = arrayToFilter.filter(function (element) {
+
+      return stringValueFilter(filters.type, element.offer.type) &&
+      stringValueFilter(filters.rooms, element.offer.rooms) &&
+      stringValueFilter(filters.guests, element.offer.guests) &&
+      element.offer.price >= priseStringToPriceNumber[filters.price + 'Min'] && element.offer.price <= priseStringToPriceNumber[filters.price + 'Max'] &&
+      featuresFilter(filters, element);
     });
     filterQualityPins(filteredArray);
     updatePins();
