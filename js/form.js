@@ -35,6 +35,8 @@
   var adFormReset = adForm.querySelector('.ad-form__reset');
   var fileChooserPhoto = adForm.querySelector('.ad-form__upload input[type=file]');
   var fileChooserAvatar = adForm.querySelector('.ad-form__field input[type=file]');
+  var previewPhoto = adForm.querySelector('.ad-form__photo');
+  var previewAvatar = adForm.querySelector('.ad-form-header__preview img');
 
 
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -47,8 +49,6 @@
   var copyData = function (adsBackend) {
     adsLocal = adsBackend;
   };
-
-  window.backend.load(copyData);
 
   var validatesTitle = function () {
     adTitle.setAttribute('required', true);
@@ -146,7 +146,7 @@
 
     adForm.reset();
     filtersForm.reset();
-    priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_HOUSE);
+    priceHousing.setAttribute('placeholder', MIN_PRISE_FOR_FLAT);
 
     var allPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     allPins.forEach(function (item) {
@@ -162,6 +162,9 @@
     mapPinMain.style.top = START_COORDS_Y_MAP_PIN_MAIN;
 
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE / 2);
+
+    previewPhoto.style.backgroundImage = 'none';
+    previewAvatar.setAttribute('src', 'img/muffin-grey.svg');
   };
 
   var successSend = function () {
@@ -289,6 +292,8 @@
   deactivatesPage();
 
   var activatesPage = function () {
+    window.backend.load(copyData);
+
     allForms.forEach(function (item) {
       item.removeAttribute('disabled');
     });
