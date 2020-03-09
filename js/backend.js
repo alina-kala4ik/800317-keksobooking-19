@@ -3,7 +3,7 @@
 (function () {
   var URL_GET_DATA = 'https://js.dump.academy/keksobooking/data';
   var URL_SEND_FORM = 'https://js.dump.academy/keksobooking';
-  var CADE_SUCCSS = 200;
+  var CADE_SUCCESS = 200;
 
   var getNewRequest = function (url, typeRequest, functionLoad, functionError, data) {
     var xhr = new XMLHttpRequest();
@@ -11,7 +11,7 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === CADE_SUCCSS) {
+      if (xhr.status === CADE_SUCCESS) {
         functionLoad(xhr.response);
       } else if (functionError) {
         functionError();
