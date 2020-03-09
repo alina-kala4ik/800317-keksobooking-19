@@ -53,7 +53,7 @@
     return filterValue === DEFAULT_FILTER_VALUE || filterValue.toString() === elementValue.toString();
   };
 
-  var filterСonditions = function (filters, arrayToFilter) {
+  var filterConditions = function (filters, arrayToFilter) {
     var filteredArray = arrayToFilter.filter(function (element) {
 
       return stringValueFilter(filters.type, element.offer.type) &&
@@ -89,7 +89,7 @@
       var name = imputNameToArrayName[evt.target.name];
       filterValues[name] = evt.target.value;
     }
-    setTimeout(filterСonditions, DEBOUNCE_INTERVAL, filterValues, array);
+    setTimeout(filterConditions, DEBOUNCE_INTERVAL, filterValues, array);
   };
 
   window.filter = {
