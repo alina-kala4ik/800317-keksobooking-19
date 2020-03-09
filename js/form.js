@@ -48,6 +48,12 @@
 
   var copyData = function (adsBackend) {
     adsLocal = adsBackend;
+    returnPins();
+  };
+
+  var returnPins = function () {
+    window.filter.qualityPins(adsLocal);
+    mapPins.appendChild(window.pin.return);
   };
 
   var validatesTitle = function () {
@@ -303,9 +309,6 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     address.value = Math.ceil(MAP_PIN_X + window.util.MAP_PIN_SIZE / 2) + ', ' + Math.ceil(MAP_PIN_Y + window.util.MAP_PIN_SIZE + window.util.MAP_PIN_HEIGHT_ARROW);
-
-    window.filter.qualityPins(adsLocal);
-    mapPins.appendChild(window.pin.return);
 
     adForm.addEventListener('change', synchronizesCheckTime);
     adForm.addEventListener('change', synchronizesPriseAndType);
