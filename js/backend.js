@@ -5,40 +5,39 @@
   var URL_SEND_FORM = 'https://js.dump.academy/keksobooking';
   var CADE_SUCCSS = 200;
 
-  var load = function (onload) {
+  var getNewRequest = function (url, typeRequest, functionLoad, functionError, data) {
     var xhr = new XMLHttpRequest();
 
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      switch (xhr.status) {
-        case CADE_SUCCSS: onload(xhr.response); break;
-        default: throw new Error('Ошибка ' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
-
-    xhr.open('GET', URL_GET_DATA);
-    xhr.send();
-  };
-
-  var send = function (data, onLoad, onError) {
-    var xhr = new XMLHttpRequest();
-
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      switch (xhr.status) {
-        case CADE_SUCCSS: onLoad(); break;
-        default: onError();
+      if (xhr.status === CADE_SUCCSS) {
+        functionLoad(xhr.response);
+      } else if (functionError) {
+        functionError();
+      } else {
+        throw new Error('Ошибка ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError();
+      if (functionError) {
+        functionError();
+      } else {
+        throw new Error('Ошибка ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
-    xhr.open('POST', URL_SEND_FORM);
+    xhr.open(typeRequest, url);
     xhr.send(data);
+  };
+
+  var load = function (onload) {
+    getNewRequest(URL_GET_DATA, 'GET', onload);
+  };
+
+  var send = function (data, onLoad, onError) {
+    getNewRequest(URL_SEND_FORM, 'POST', onLoad, onError, data);
   };
 
   window.backend = {
