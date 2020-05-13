@@ -2,6 +2,7 @@
 
 (function () {
   var URL_GET_DATA = 'https://js.dump.academy/keksobooking/data';
+  var URL_GET_DATA = './../data.json';
   var URL_SEND_FORM = 'https://js.dump.academy/keksobooking';
   var CADE_SUCCESS = 200;
 
